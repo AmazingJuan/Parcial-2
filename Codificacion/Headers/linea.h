@@ -6,15 +6,21 @@
 class linea{
     private:
         map<int, estacion*> estaciones;
+        string nombre;
         int nroEstaciones;
+        bool tieneTransf;
     public:
-        linea();
-        void insertar(estacion *estacion);
+        linea(string nombre);
+        void insertar(estacion *estacion, int posicion);
+        void eliminar(int posicion);
+        string *generarOpciones();
         string strEstaciones();
         void setNroEstaciones(int nroEstaciones);
         int getNroEstaciones();
-        map<int, estacion*> getEstaciones();
+        map<int, estacion*> &getEstaciones();
         void setEstaciones(map<int, estacion*> &estaciones);
+        bool getTieneTransf();
+        void setTieneTransf(bool tieneTransf);
 };
 
 #endif // LINEA_H

@@ -4,11 +4,13 @@
 class estacion{
     private:
         string nombre;
+        string sufijo;
         bool transferencia;
         int tiempoSgt;
         int tiempoAnt;
     public:
         estacion();
+        estacion(string nombre);
         string getNombre();
         void setNombre(string nombre);
 

@@ -3,6 +3,11 @@
 estacion::estacion(){
     this -> nombre = "bartolo";
 }
+
+estacion::estacion(string nombre){
+    this -> nombre = nombre;
+}
+
 void estacion::setNombre(string nombre){
     this -> nombre = nombre;
 }

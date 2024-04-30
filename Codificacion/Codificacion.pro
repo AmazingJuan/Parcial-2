@@ -7,6 +7,7 @@ SOURCES += \
         Sources/estacion.cpp \
         Sources/linea.cpp \
         Sources/menus.cpp \
+        Sources/red.cpp \
         Sources/utilidades.cpp \
         Sources/validacion.cpp \
         main.cpp
