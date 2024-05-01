@@ -57,3 +57,39 @@ int menuNumero(string mensaje, string tipoEntrada){
         else error = true; //Si la entrada no es valida se activa el booleano error.
     }
 }
+
+string menuNombre(string mensaje, red *red){
+    bool bandera = true; //Se inicializa una bandera que indica si el usuario termino de escoger o no.
+    bool error = false; //Se inicializa un booleano error, si este es verdadero entonces mostrara un mensaje indicando que el usuario se equivoco al escoger la opcion.
+    string entrada = "";
+    while(bandera){ //Ciclo que siempre esta presente hasta que el usuario escoja una opcion valida.
+        limpiarPantalla(); //Se limpia la pantalla.
+        cout << mensaje; //Se imprime el mensaje que se le quiere mostrar al usuario
+        //De la linea 50 a 52 se discierne entre mostrarle al usuario un mensaje indicando que ingrese la entrada, o uno que le haga saber que se equivoco y que debe escoger una opcion valida.
+        if(!error) cout << "Ingrese el nombre de la linea a crear: ";
+        else cout << "Ingreso una opcion incorrecta, vuelva a ingresar el nombre de la linea: ";
+        getline(cin, entrada); //Se obtiene la entrada del usuario
+        if(!red->buscarLinea(entrada) && entrada.size() > 0){ //Se valida que la entrada sea un numero positivo.
+            return entrada; //Se devuelve al entrada que el usuario ingreso, como entero.
+        }
+        else error = true; //Si la entrada no es valida se activa el booleano error.
+    }
+}
+
+string menuNombre(string mensaje, linea *linea){
+    bool bandera = true; //Se inicializa una bandera que indica si el usuario termino de escoger o no.
+    bool error = false; //Se inicializa un booleano error, si este es verdadero entonces mostrara un mensaje indicando que el usuario se equivoco al escoger la opcion.
+    string entrada = "";
+    while(bandera){ //Ciclo que siempre esta presente hasta que el usuario escoja una opcion valida.
+        limpiarPantalla(); //Se limpia la pantalla.
+        cout << mensaje; //Se imprime el mensaje que se le quiere mostrar al usuario
+        //De la linea 50 a 52 se discierne entre mostrarle al usuario un mensaje indicando que ingrese la entrada, o uno que le haga saber que se equivoco y que debe escoger una opcion valida.
+        if(!error) cout << "Ingrese el nombre de la linea a crear: ";
+        else cout << "Ingreso una opcion incorrecta, vuelva a ingresar el nombre de la linea: ";
+        getline(cin, entrada); //Se obtiene la entrada del usuario
+        if(!linea->buscarEstacion(entrada) && entrada.size() > 0){ //Se valida que la entrada sea un numero positivo.
+            return entrada; //Se devuelve al entrada que el usuario ingreso, como entero.
+        }
+        else error = true; //Si la entrada no es valida se activa el booleano error.
+    }
+}

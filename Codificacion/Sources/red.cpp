@@ -25,6 +25,22 @@ string* red::generarOpciones(){
     return opciones;
 }
 
+string red::strLineas(){
+    string aux;
+    for(auto it = this -> getLineas().begin(); it != this -> getLineas().end(); it++){
+        aux += to_string(it->first) + ". " + it->second->getNombre() + "\n";
+    }
+    return aux;
+}
+
+bool red::buscarLinea(string nombre){
+    nombre = removeSeparator(toLowerCase(nombre), ' ');
+    for(auto it = this -> getLineas().begin(); it != this -> getLineas().end();it++){
+        if(removeSeparator(toLowerCase(it->second->getNombre()), ' ') == nombre) return true;
+    }
+    return false;
+}
+
 void red::setNroEstaciones(int nroEstaciones){
     this -> nroEstaciones = nroEstaciones;
 }

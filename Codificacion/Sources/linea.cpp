@@ -37,7 +37,7 @@ void linea::eliminar(int posicion){
 string linea::strEstaciones(){
     string aux;
     for(auto it = this -> getEstaciones().begin(); it != this -> getEstaciones().end(); it++){
-        aux += to_string(it->first) + it->second->getNombre() + "\n";
+        aux += to_string(it->first) + ". " + it->second->getNombre() + " " + it->second->getSufijo() + "\n";
     }
     return aux;
 }
@@ -47,7 +47,23 @@ string* linea::generarOpciones(){
     for(auto it = this -> getEstaciones().begin(); it != this -> getEstaciones().end();it++){
         opciones[it -> first - 1] = to_string(it -> first);
     }
+    opciones[this->getNroEstaciones()] = to_string(this->getNroEstaciones() + 1);
     return opciones;
+}
+
+bool linea::buscarEstacion(string nombre){
+    nombre = removeSeparator(toLowerCase(nombre), ' ');
+    for(auto it = this -> getEstaciones().begin(); it != this -> getEstaciones().end();it++){
+        if(removeSeparator(toLowerCase(it->second->getNombre()), ' ') == nombre || removeSeparator(toLowerCase(it->second->getNombre() + " " + it ->second->getSufijo()), ' ') == nombre ) return true;
+    }
+    return false;
+}
+
+string linea::getNombre(){
+    return this -> nombre;
+}
+void linea::setNombre(string nombre){
+    this -> nombre = nombre;
 }
 
 void linea::setNroEstaciones(int nroEstaciones){

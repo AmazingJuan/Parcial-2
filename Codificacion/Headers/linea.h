@@ -3,6 +3,7 @@
 
 #include "importaciones.h"
 #include "estacion.h"
+#include "utilidades.h"
 class linea{
     private:
         map<int, estacion*> estaciones;
@@ -15,6 +16,9 @@ class linea{
         void eliminar(int posicion);
         string *generarOpciones();
         string strEstaciones();
+        bool buscarEstacion(string nombre);
+        string getNombre();
+        void setNombre(string nombre);
         void setNroEstaciones(int nroEstaciones);
         int getNroEstaciones();
         map<int, estacion*> &getEstaciones();

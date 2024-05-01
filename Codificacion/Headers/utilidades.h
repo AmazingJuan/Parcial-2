@@ -4,6 +4,10 @@
 
 void limpiarPantalla();
 void congelarPantalla();
-string mensajes();
+string mensajes(int parametro);
+void mostrarError(string mensaje);
+void mostrarExito(string mensaje);
+string toLowerCase(string cadena);
+string removeSeparator(string cadena, char separador);
 
 #endif // UTILIDADES_H

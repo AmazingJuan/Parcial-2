@@ -12,6 +12,8 @@ class red{
         void insertarLinea(linea *linea);
         void eliminarLinea(int posicion);
         string *generarOpciones();
+        string strLineas();
+        bool buscarLinea(string nombre);
         void setNroEstaciones(int nroEstaciones);
         int getNroEstaciones();
         void setNroLineas(int nroLineas);

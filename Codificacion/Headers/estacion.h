@@ -9,11 +9,18 @@ class estacion{
         int tiempoSgt;
         int tiempoAnt;
     public:
-        estacion();
         estacion(string nombre);
+        estacion(string nombre, string sufijo);
         string getNombre();
         void setNombre(string nombre);
-
+        string getSufijo();
+        void setSufijo(string sufijo);
+        bool getTransferencia();
+        void setTransferencia(bool transferencia);
+        int getTiempoSgt();
+        void setTiempoSgt(int tiempoSgt);
+        int getTiempoAnt();
+        void setTiempoAnt(int tiempoAnt);
 };
 
 #endif // ESTACION_H
