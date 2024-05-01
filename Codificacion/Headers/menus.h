@@ -11,5 +11,6 @@ int menuOpcion(string mensaje, string* opciones, int lenOpcion);
 int menuNumero(string mensaje, string tipoEntrada);
 string menuNombre(string mensaje, red *red);
 string menuNombre(string mensaje, linea *linea);
+bool menuNombre(linea *linea, string mensaje);
 
 #endif // MENUS_H
