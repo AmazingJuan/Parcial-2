@@ -1,5 +1,3 @@
-#include <iostream>
-#include <map>
 #include "Headers/estacion.h"
 #include "Headers/linea.h"
 #include "Headers/red.h"
@@ -14,13 +12,11 @@ int main()
     int decision = 0;
     int aux = -1;
     int aux2 = -1;
-    int posicion = 0;
     int tiempoAnt = -1;
     int tiempoSgt = -1;
     int origen = 0;
     int destino = 0;
     string nombre = "";
-    red.insertarLinea(new linea("hola"));
     string opciones[10];
     string *opcAux = nullptr;
     for(int cont = 0; cont < 10; cont++) opciones[cont] = to_string(cont+1);
@@ -33,43 +29,37 @@ int main()
                     opcAux = red.generarOpciones();
                     aux = menuOpcion(mensajes(2) + "Ingrese la linea donde desea crear la estacion\n\n" + red.strLineas() + "\n", opcAux, red.getNroLineas());
                     if(red.getLineas()[aux]->getNroEstaciones() == 0){
-                        aux2 = 0;
-                        posicion = 1;
+                        aux2 = 1;
                     }
                     else{
                         delete[] opcAux;
                         opcAux = red.getLineas()[aux]->generarOpciones();
                         aux2 = menuOpcion(mensajes(3) + "Ingrese la posicion donde quiere que se posicione la estacion:\n\n" + red.getLineas()[aux]->strEstaciones() + to_string(red.getLineas()[aux]->getNroEstaciones() + 1) + ". Agregar al final\n\n" , opcAux, red.getLineas()[aux]->getNroEstaciones() + 1);
-                        posicion = aux2;
-                        if(aux2 == red.getLineas()[aux]->getNroEstaciones() + 1) {
-                            aux2 = 0;
-                        }
                     }
                     nombre = menuNombre(mensajes(6), red.getLineas()[aux]);
                     isTransferencia = (menuOpcion(mensajes(4) + "Diga si la estacion a crear es de transferencia: \n\n1. Si\n2. No\n\n", opciones, 2)) % 2;
                     if(isTransferencia) {
                         red.getLineas()[aux] -> insertar(new estacion(nombre, red.getLineas()[aux]->getNombre()), aux2);
-                        red.getLineas()[aux]-> insertar(red.getLineas()[aux]->getEstaciones()[posicion]);
                     }
                     else red.getLineas()[aux] -> insertar(new estacion(nombre), aux2);
                     red.setNroEstaciones(red.getNroEstaciones() + 1);
 
-                    if(posicion - 1 != 0){
-                        nombre = red.getLineas()[aux]->getEstaciones()[posicion - 1]->getNombre() + " " + red.getLineas()[aux]->getEstaciones()[posicion - 1]->getSufijo();
+                    if(aux2 - 1 != 0){
+                        nombre = red.getLineas()[aux]->getEstaciones()[aux2 - 1]->getNombre() + " " + red.getLineas()[aux]->getEstaciones()[aux2 - 1]->getSufijo();
                         tiempoAnt = menuNumero(mensajes(5), "el tiempo para desde la estacion " + nombre + " hasta la estacion actual");
-                        red.getLineas()[aux]->getEstaciones()[posicion]->setTiempoAnt(tiempoAnt);
-                        red.getLineas()[aux]->getEstaciones()[posicion - 1]->setTiempoSgt(tiempoAnt);
+                        red.getLineas()[aux]->getEstaciones()[aux2]->setTiempoAnt(tiempoAnt);
+                        red.getLineas()[aux]->getEstaciones()[aux2 - 1]->setTiempoSgt(tiempoAnt);
                     }
-                    if(posicion + 1 <= red.getLineas()[aux]->getNroEstaciones()){
-                        nombre = red.getLineas()[aux]->getEstaciones()[posicion + 1]->getNombre() + " " + red.getLineas()[aux]->getEstaciones()[posicion + 1]->getSufijo();
+                    if(aux2 + 1 <= red.getLineas()[aux]->getNroEstaciones()){
+                        nombre = red.getLineas()[aux]->getEstaciones()[aux2 + 1]->getNombre() + " " + red.getLineas()[aux]->getEstaciones()[aux2 + 1]->getSufijo();
                         tiempoSgt = menuNumero(mensajes(5), "el tiempo para desde la estacion actual hasta la estacion " + nombre);
-                        red.getLineas()[aux]->getEstaciones()[posicion + 1]->setTiempoAnt(tiempoSgt);
-                        red.getLineas()[aux]->getEstaciones()[posicion]->setTiempoSgt(tiempoSgt);
-                        if(posicion + 1 == red.getLineas()[aux]->getNroEstaciones()){
-                            red.getLineas()[aux]->getEstaciones()[posicion + 1]->setTiempoSgt(-1);
+                        red.getLineas()[aux]->getEstaciones()[aux2 + 1]->setTiempoAnt(tiempoSgt);
+                        red.getLineas()[aux]->getEstaciones()[aux2]->setTiempoSgt(tiempoSgt);
+                        if(aux2 + 1 == red.getLineas()[aux]->getNroEstaciones()){
+                            red.getLineas()[aux]->getEstaciones()[aux2 + 1]->setTiempoSgt(-1);
                         }
                     }
-                    cout << red.getLineas()[aux]->strEstaciones();
+                    //mostrarExito("La estacion se ha creado correctamente...");
                 }
                 else{
                     mostrarError("No puede crear estaciones dado que no existen lineas...");
@@ -95,6 +85,7 @@ int main()
                             }
                             red.getLineas()[aux] -> eliminar(aux2);
                             red.setNroEstaciones(red.getNroEstaciones() - 1);
+                            mostrarExito("La estacion se ha eliminado correctamente...");
                         }
                         else{
                             mostrarError("No puede eliminar esta estacion ya que es una estacion de transferencia...");
@@ -139,7 +130,7 @@ int main()
                     opcAux = red.generarOpciones();
                     aux = menuOpcion(mensajes(2) + "Ingrese la linea que desea consultar:\n\n" + red.strLineas() + "\n", opcAux, red.getNroLineas());
                     if(red.getLineas()[aux]->getNroEstaciones() > 0){
-                        if(menuNombre(red.getLineas()[aux], "mensaje aleatorio")){
+                        if(menuNombre(red.getLineas()[aux], mensajes(6))){
                             mostrarExito("La estacion que usted proporciono si pertenece a la linea " + red.getLineas()[aux]->getNombre());
                         }
                         else{
@@ -163,18 +154,19 @@ int main()
                         delete [] opcAux;
                         opcAux = red.getLineas()[aux]->generarOpciones();
                         aux2 = menuOpcion(mensajes(4) + "Ingrese la estacion de transferencia que conectara la linea " + red.getLineas()[aux]->getNombre() + " con esta nueva linea: \n\n" + red.getLineas()[aux]->strTransferencia() + "\n", opcAux, red.getLineas()[aux]->getNroTransf());
-                        nombre = menuNombre("nombre", &red);
+                        nombre = menuNombre(mensajes(6), &red);
                         red.insertarLinea(new linea(nombre));
-                        red.getLineas()[red.getNroLineas()]->insertar(new estacion(red.getLineas()[aux]->getTransferencia()[aux2]->getNombre(), nombre), 0);
-                        red.getLineas()[red.getNroLineas()]->insertar(red.getLineas()[red.getNroLineas()]->getEstaciones()[1]);
+                        red.getLineas()[red.getNroLineas()]->insertar(new estacion(red.getLineas()[aux]->getTransferencia()[aux2]->getNombre(), nombre), 1);
+                        //mostrarExito("La linea se ha creado correctamente...");
                     }
                     else{
-                        //error
+                        mostrarError("La linea actual no posee estaciones de transferencia, no se puede crear la linea...");
                     }
                 }
                 else{
-                    nombre = menuNombre("nombre", &red);
+                    nombre = menuNombre(mensajes(6), &red);
                     red.insertarLinea(new linea(nombre));
+                    mostrarExito("La linea se ha creado correctamente...");
                 }
                 break;
             case 7:
@@ -213,22 +205,21 @@ int main()
                         origen = menuOpcion(mensajes(3) + "Ingrese la estacion de ORIGEN:\n\n" + red.getLineas()[aux]->strEstaciones() + "\n", opcAux, red.getLineas()[aux]->getNroEstaciones());
                         destino = menuOpcion(mensajes(3) + "Ingrese la estacion de DESTINO:\n\n" + red.getLineas()[aux]->strEstaciones() + "\n", opcAux, red.getLineas()[aux]->getNroEstaciones());
                         if(origen == destino){
-                            //error
+                            mostrarError("La estacion de origen es igual a la estacion de destino, por lo tanto se demora 0 segundos en el trayecto...");
                         }
                         else{
-                            int tiempo = red.getLineas()[aux]->calcularTrayecto(origen, destino);
-                            menuOpcion("resultado" + to_string(tiempo), opciones, 1);
+                            menuOpcion(mensajes(5) + "El tiempo que se demora al hacer el trayecto indicado es de " + to_string(red.getLineas()[aux]->calcularTrayecto(origen, destino)) + " segundos.\n\n1. Ingrese esta opcion si desea volver al menu principal.\n\n", opciones, 1);
                         }
                     }
                     else if(red.getLineas()[aux]->getNroEstaciones() == 1){
-                        //error
+                        mostrarError("La linea actual solo posee una estacion, por lo tanto se demora 0 segundos en cualquier trayecto...");
                     }
                     else{
-                        //error
+                        mostrarError("La linea actual no posee estaciones...");
                     }
                 }
                 else {
-                    //error
+                    mostrarError("La red actual no posee lineas...");
                 }
                 break;
             case 10:

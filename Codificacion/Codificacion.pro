@@ -16,7 +16,9 @@ HEADERS += \
     Headers/estacion.h \
     Headers/importaciones.h \
     Headers/linea.h \
+    Headers/lista.h \
     Headers/menus.h \
+    Headers/nodo.h \
     Headers/red.h \
     Headers/utilidades.h \
     Headers/validacion.h

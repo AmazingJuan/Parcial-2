@@ -4,53 +4,55 @@ linea::linea(string nombre){
     this -> nombre = nombre;
     this -> nroEstaciones = 0;
     this -> nroTransf = 0;
+    estaciones = *new lista<estacion*>();
+    transferencia = *new lista<estacion*>();
 }
 
-void linea::insertar(estacion *estacion, int posicion){
-    this->setNroEstaciones(this->getNroEstaciones() + 1);
-    if(posicion == 0){
-        this->getEstaciones().insert(pair(this->getNroEstaciones(), estacion));
-    }
-    else{
-        this->getEstaciones().insert(pair(this->getNroEstaciones(), nullptr));
-        for(int cont = this -> getNroEstaciones(); cont > 0; cont--){
-            if(cont == posicion){
-                this->getEstaciones()[cont] = estacion;
-                break;
-            }
-            else{
-                this->getEstaciones()[cont] = this->getEstaciones()[cont - 1];
-            }
-        }
+linea::~linea() {
+    estaciones.~lista();
+    transferencia.~lista();
+}
+
+void linea::insertar(estacion *estacion, int indice)
+{
+    estaciones.insertar(new nodo(estacion), indice);
+    nroEstaciones++;
+    if(estacion -> getTransferencia()) {
+        insertarTransferencia(estacion);
+        nroTransf++;
     }
 }
 
-void linea::insertar(estacion  *estacion){
-    this->setNroTransf(this->getNroTransf() + 1);
-    this -> getTransferencia().insert(pair(this ->getNroTransf(), estacion));
+void linea::insertar(estacion *estacion)
+{
+    estaciones.insertar(new nodo(estacion));
+    nroEstaciones++;
 }
 
-void linea::eliminar(int posicion){
-    //consultar destruccion de objeto y destruir la estacion aca;
-    this -> setNroEstaciones(this ->getNroEstaciones() - 1);
-    for(int cont = posicion; cont < this ->getNroEstaciones() + 1; cont++){
-        this -> getEstaciones()[cont] = this -> getEstaciones()[cont + 1];
-    }
-    this -> getEstaciones().erase(this ->getNroEstaciones() + 1);
+void linea::insertarTransferencia(estacion *estacion)
+{
+    transferencia.insertar(new nodo(estacion));
 }
+
+void linea::eliminar(int indice)
+{
+    estaciones.eliminar(indice);
+    nroEstaciones--;
+}
+
 
 string linea::strEstaciones(){
     string aux;
-    for(auto it = this -> getEstaciones().begin(); it != this -> getEstaciones().end(); it++){
-        aux += to_string(it->first) + ". " + it->second->getNombre() + " " + it->second->getSufijo() + "\n";
+    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+        aux += to_string(cont) + ". " + estaciones[cont]->getNombre() + " " + estaciones[cont]->getSufijo() + "\n";
     }
     return aux;
 }
 
 string linea::strTransferencia(){
     string aux;
-    for(auto it = this -> getTransferencia().begin(); it != this -> getTransferencia().end(); it++){
-        aux += to_string(it->first) + ". " + it->second->getNombre() + "\n";
+    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+        aux += to_string(cont) + ". " + transferencia[cont]->getNombre() + "\n";
     }
     return aux;
 }
@@ -58,8 +60,8 @@ string linea::strTransferencia(){
 
 string* linea::generarOpciones(){
     string *opciones = new string[this->getNroEstaciones() + 1];
-    for(auto it = this -> getEstaciones().begin(); it != this -> getEstaciones().end();it++){
-        opciones[it -> first - 1] = to_string(it -> first);
+    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+        opciones[cont - 1] = to_string(cont);
     }
     opciones[this->getNroEstaciones()] = to_string(this->getNroEstaciones() + 1);
     return opciones;
@@ -67,31 +69,30 @@ string* linea::generarOpciones(){
 
 bool linea::buscarEstacion(string nombre){
     nombre = removeSeparator(toLowerCase(nombre), ' ');
-    for(auto it = this -> getEstaciones().begin(); it != this -> getEstaciones().end();it++){
-        if(removeSeparator(toLowerCase(it->second->getNombre()), ' ') == nombre || removeSeparator(toLowerCase(it->second->getNombre() + " " + it ->second->getSufijo()), ' ') == nombre ) return true;
+    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+        if(removeSeparator(toLowerCase(estaciones[cont] -> getNombre()), ' ') == nombre || removeSeparator(toLowerCase(estaciones[cont] ->getNombre() + " " + estaciones[cont]->getSufijo()), ' ') == nombre ) return true;
     }
     return false;
 }
 
 int linea::calcularTrayecto(int origen, int destino){
     int tiempo = 0;
-    map<int, estacion*> estaciones = this -> getEstaciones();
     int aux = origen;
     if(destino < origen){
         origen = destino;
         destino = aux;
     }
     for(int cont = origen; cont < destino; cont++){
-        tiempo += estaciones[origen]->getTiempoSgt();
+        tiempo += this -> getEstaciones()[origen]->getTiempoSgt();
     }
     return tiempo;
 }
 
-map<int, estacion*> &linea::getTransferencia(){
+lista<estacion*> &linea::getTransferencia(){
     return this -> transferencia;
 }
 
-void linea::setTransferencia(map<int, estacion*> &transferencia){
+void linea::setTransferencia(lista<estacion*> &transferencia){
     this -> transferencia = transferencia;
 }
 
@@ -110,11 +111,11 @@ int linea::getNroEstaciones(){
     return this -> nroEstaciones;
 }
 
-void linea::setEstaciones(map<int, estacion*> &estaciones){
+void linea::setEstaciones(lista<estacion*> &estaciones){
     this ->estaciones = estaciones;
 }
 
-map<int, estacion*> &linea::getEstaciones(){
+lista<estacion*> &linea::getEstaciones(){
     return this -> estaciones;
 }
 

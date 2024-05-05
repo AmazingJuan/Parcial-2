@@ -3,14 +3,15 @@
 #include "linea.h"
 class red{
     private:
-        map<int, linea*> lineas;
+        lista<linea*> lineas;
         int nroLineas;
         int nroEstaciones;
-        vector<string> transferencia;
     public:
         red();
+        ~red();
+        void insertarLinea(linea* linea, int indice);
         void insertarLinea(linea *linea);
-        void eliminarLinea(int posicion);
+        void eliminarLinea(int indice);
         string *generarOpciones();
         string strLineas();
         bool buscarLinea(string nombre);
@@ -18,8 +19,8 @@ class red{
         int getNroEstaciones();
         void setNroLineas(int nroLineas);
         int getNroLineas();
-        map<int, linea*> &getLineas();
-        void setLineas(map<int, linea*> &lineas);
+        lista<linea*> &getLineas();
+        void setLineas(lista<linea*> &lineas);
 };
 
 #endif // RED_H

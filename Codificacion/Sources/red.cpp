@@ -1,42 +1,51 @@
 #include "../Headers/red.h"
 red::red(){
     this -> nroLineas = 0;
+
 }
 
-void red::insertarLinea(linea *linea){
-    this -> setNroLineas(this -> getNroLineas() + 1);
-    this -> getLineas().insert(pair(this ->getNroLineas(), linea));
+red::~red(){
+    cout << "destructor red";
 }
 
-void red::eliminarLinea(int posicion){
-    //consultar destruccion de objeto y destruir la linea aca;
-    this -> setNroLineas(this ->getNroLineas() - 1);
-    for(int cont = posicion; cont < this ->getNroLineas() + 1; cont++){
-        this -> getLineas()[cont] = this -> getLineas()[cont + 1];
-    }
-    this -> getLineas().erase(this ->getNroLineas() + 1);
+void red::insertarLinea(linea *linea, int indice)
+{
+    lineas.insertar(new nodo(linea), indice);
+    nroLineas++;
+}
+
+void red::insertarLinea(linea *linea)
+{
+    nroLineas++;
+    lineas.insertar(new nodo(linea), nroLineas);
+
+}
+
+void red::eliminarLinea(int indice){
+    lineas.eliminar(indice);
+    nroLineas--;
 }
 
 string* red::generarOpciones(){
     string *opciones = new string[this->getNroLineas() + 1];
-    for(auto it = this -> getLineas().begin(); it != this -> getLineas().end();it++){
-        opciones[it -> first - 1] = to_string(it -> first);
+    for(int cont = 1; cont <= lineas.getElementos(); cont++){
+        opciones[cont - 1] = to_string(cont);
     }
     return opciones;
 }
 
 string red::strLineas(){
     string aux;
-    for(auto it = this -> getLineas().begin(); it != this -> getLineas().end(); it++){
-        aux += to_string(it->first) + ". " + it->second->getNombre() + "\n";
+    for(int cont = 1; cont <= lineas.getElementos(); cont++){
+        aux += to_string(cont) + ". " + lineas[cont]->getNombre() + "\n";
     }
     return aux;
 }
 
 bool red::buscarLinea(string nombre){
     nombre = removeSeparator(toLowerCase(nombre), ' ');
-    for(auto it = this -> getLineas().begin(); it != this -> getLineas().end();it++){
-        if(removeSeparator(toLowerCase(it->second->getNombre()), ' ') == nombre) return true;
+    for(int cont = 1; cont <= lineas.getElementos(); cont++){
+        if(removeSeparator(toLowerCase(lineas[cont]->getNombre()), ' ') == nombre) return true;
     }
     return false;
 }
@@ -54,9 +63,10 @@ void red::setNroLineas(int nroLineas){
 int red::getNroLineas(){
     return this -> nroLineas;
 }
-map<int, linea*> &red::getLineas(){
+lista<linea*> &red::getLineas(){
     return this -> lineas;
 }
-void red::setLineas(map<int, linea*> &lineas){
+void red::setLineas(lista<linea*> &lineas){
     this -> lineas = lineas;
 }
+
