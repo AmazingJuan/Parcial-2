@@ -21,7 +21,6 @@ public:
 
     ~nodo(){
         delete datoActual;
-        delete datoSiguiente;
     }
 
     nodo *getSiguiente()

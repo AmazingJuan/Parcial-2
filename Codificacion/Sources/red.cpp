@@ -1,30 +1,58 @@
 #include "../Headers/red.h"
+
+/**
+ * Constructor de la clase red.
+ *
+ * Constructor para toda instancia de la clase red.
+ */
+
 red::red(){
+
+    //Se inicializan los valores enteros de la red.
+    lineas = *new lista<linea*>;
     this -> nroLineas = 0;
-
+    this -> nroEstaciones = 0;
 }
 
-red::~red(){
-    cout << "destructor red";
-}
-
-void red::insertarLinea(linea *linea, int indice)
+red::~red()
 {
-    lineas.insertar(new nodo(linea), indice);
-    nroLineas++;
+    lineas.~lista();
 }
+
+/**
+ * Breve descripciono del metodo insertarLinea.
+ *
+ * Inserta una linea de metro, el orden de inserción es el orden de llegada.
+ *
+ * @param linea puntero a una instancia de la clase linea, que representa la linea actual que se quiere insertar a la lista de lineas.
+ */
 
 void red::insertarLinea(linea *linea)
 {
-    nroLineas++;
-    lineas.insertar(new nodo(linea), nroLineas);
-
+    nroLineas++; //Se aumenta el contador de lineas en uno.
+    lineas.insertar(new nodo(linea), nroLineas); //Se llama al metodo insertar de la clase lista.
 }
+
+/**
+ * Breve descripciono del metodo eliminarLinea.
+ *
+ * Borra la linea ubicada en el indice dado de la lista de lineas de metro.
+ *
+ * @param indice Posicion donde se encuentra la linea a eliminar.
+ */
 
 void red::eliminarLinea(int indice){
-    lineas.eliminar(indice);
-    nroLineas--;
+    lineas.eliminar(indice); //Se llama al metodo eliminar de la clase lista.
+    nroLineas--; //Se disminuye el contador de lineas en uno.
 }
+
+/**
+ * Breve descripcion del metodo generarOpciones.
+ *
+ * Permite obtener un arreglo de strings (como puntero), en cada posicion guarda un numero correspondiente a una posicion de una linea.
+ *
+ * @return String* que contiene los indices de todas las lineas.
+ */
 
 string* red::generarOpciones(){
     string *opciones = new string[this->getNroLineas() + 1];
@@ -34,6 +62,14 @@ string* red::generarOpciones(){
     return opciones;
 }
 
+/**
+ * Breve descripcion del metodo strLineas.
+ *
+ * Permite obtener un string que muestra las lineas de la red, enumerandolas.
+ *
+ * @return String que contiene todas las lineas deseadas.
+ */
+
 string red::strLineas(){
     string aux;
     for(int cont = 1; cont <= lineas.getElementos(); cont++){
@@ -42,6 +78,14 @@ string red::strLineas(){
     return aux;
 }
 
+/**
+ * Breve descripcion del metodo buscarLinea.
+ *
+ * Permite saber si una linea esta en una red o no.
+ *
+ * @return bool que habla acerca de la existencia de la linea ingresada.
+ */
+
 bool red::buscarLinea(string nombre){
     nombre = removeSeparator(toLowerCase(nombre), ' ');
     for(int cont = 1; cont <= lineas.getElementos(); cont++){
@@ -49,6 +93,12 @@ bool red::buscarLinea(string nombre){
     }
     return false;
 }
+
+/**
+ * SETTERS Y GETTERS.
+ *
+ * Se listan los setters y getters de la clase estación.
+ */
 
 void red::setNroEstaciones(int nroEstaciones){
     this -> nroEstaciones = nroEstaciones;
@@ -69,4 +119,3 @@ lista<linea*> &red::getLineas(){
 void red::setLineas(lista<linea*> &lineas){
     this -> lineas = lineas;
 }
-

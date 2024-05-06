@@ -1,5 +1,13 @@
 #include "../Headers/estacion.h"
 
+/**
+ * Constructor de la clase estacion.
+ *
+ * Constructor diseñado para las estaciones de transferencia.
+ *
+ * @param nombre Nombre de la estacion.
+ * @param sufijo Nombre de la linea a la que la estacion de transferencia va a pertenecer.
+ */
 
 estacion::estacion(string nombre, string sufijo){
     this -> nombre = nombre;
@@ -9,6 +17,14 @@ estacion::estacion(string nombre, string sufijo){
     this -> tiempoSgt = -1;
 }
 
+/**
+ * Constructor de la clase estacion.
+ *
+ * Constructor diseñado para las estaciones que no son de transferencia.
+ *
+ * @param nombre Nombre de la estacion.
+ */
+
 estacion::estacion(string nombre){
     this -> nombre = nombre;
     this -> transferencia = false;
@@ -17,19 +33,28 @@ estacion::estacion(string nombre){
     this -> tiempoSgt = -1;
 }
 
+/**
+ * SETTERS Y GETTERS.
+ *
+ * Se listan los setters y getters de la clase estación.
+ */
+
+
 void estacion::setNombre(string nombre){
     this -> nombre = nombre;
 }
 
-string estacion::getNombre(){
-    return this -> nombre;
+string estacion::getNombreFull()
+{ //Obtiene el nombre completo de la estación, si es de transferencia le añade el sufijo correspondiente.
+    string name = nombre;
+    if(sufijo != ""){
+        name += " " + sufijo;
+    }
+    return name;
 }
 
-string estacion::getSufijo(){
-    return this -> sufijo;
-}
-void estacion::setSufijo(string sufijo){
-    this -> sufijo = sufijo;
+string estacion::getNombre(){
+    return this -> nombre;
 }
 
 bool estacion::getTransferencia(){

@@ -45,13 +45,13 @@ int main()
                     red.setNroEstaciones(red.getNroEstaciones() + 1);
 
                     if(aux2 - 1 != 0){
-                        nombre = red.getLineas()[aux]->getEstaciones()[aux2 - 1]->getNombre() + " " + red.getLineas()[aux]->getEstaciones()[aux2 - 1]->getSufijo();
+                        nombre = red.getLineas()[aux]->getEstaciones()[aux2 - 1]->getNombreFull();
                         tiempoAnt = menuNumero(mensajes(5), "el tiempo para desde la estacion " + nombre + " hasta la estacion actual");
                         red.getLineas()[aux]->getEstaciones()[aux2]->setTiempoAnt(tiempoAnt);
                         red.getLineas()[aux]->getEstaciones()[aux2 - 1]->setTiempoSgt(tiempoAnt);
                     }
                     if(aux2 + 1 <= red.getLineas()[aux]->getNroEstaciones()){
-                        nombre = red.getLineas()[aux]->getEstaciones()[aux2 + 1]->getNombre() + " " + red.getLineas()[aux]->getEstaciones()[aux2 + 1]->getSufijo();
+                        nombre = red.getLineas()[aux]->getEstaciones()[aux2 + 1]->getNombreFull();
                         tiempoSgt = menuNumero(mensajes(5), "el tiempo para desde la estacion actual hasta la estacion " + nombre);
                         red.getLineas()[aux]->getEstaciones()[aux2 + 1]->setTiempoAnt(tiempoSgt);
                         red.getLineas()[aux]->getEstaciones()[aux2]->setTiempoSgt(tiempoSgt);
@@ -59,7 +59,7 @@ int main()
                             red.getLineas()[aux]->getEstaciones()[aux2 + 1]->setTiempoSgt(-1);
                         }
                     }
-                    //mostrarExito("La estacion se ha creado correctamente...");
+                    mostrarExito("La estacion se ha creado correctamente...");
                 }
                 else{
                     mostrarError("No puede crear estaciones dado que no existen lineas...");
@@ -114,7 +114,7 @@ int main()
                     aux = menuOpcion(mensajes(2) + "Ingrese la linea que desea consultar:\n\n" + red.strLineas() + "\n", opcAux, red.getNroLineas());
                     if(red.getLineas()[aux]->getNroEstaciones() > 0){
                         nombre = red.getLineas()[aux]->getNombre();
-                        menuOpcion(mensajes(3) + "Hay en total " + to_string(red.getLineas()[aux]->getNroEstaciones()) + " estaciones en la red " + nombre + ", visualicelas aca:\n\n" + red.getLineas()[aux]->strEstaciones() +"\n1. Ingrese esta opcion si desea volver al menu principal\n\n" , opciones, 1);
+                        menuOpcion(mensajes(3) + "Hay en total " + to_string(red.getLineas()[aux]->getNroEstaciones()) + " estaciones en la red, visualicelas aca:\n\n" + red.getLineas()[aux]->strEstaciones() +"\n1. Ingrese esta opcion si desea volver al menu principal\n\n" , opciones, 1);
                     }
                     else{
                         mostrarError("No hay estaciones para mostrar, la linea seleccionada no posee estaciones...");
@@ -157,7 +157,7 @@ int main()
                         nombre = menuNombre(mensajes(6), &red);
                         red.insertarLinea(new linea(nombre));
                         red.getLineas()[red.getNroLineas()]->insertar(new estacion(red.getLineas()[aux]->getTransferencia()[aux2]->getNombre(), nombre), 1);
-                        //mostrarExito("La linea se ha creado correctamente...");
+                        mostrarExito("La linea se ha creado correctamente...");
                     }
                     else{
                         mostrarError("La linea actual no posee estaciones de transferencia, no se puede crear la linea...");

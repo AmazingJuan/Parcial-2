@@ -13,8 +13,7 @@ class estacion{
         estacion(string nombre, string sufijo);
         string getNombre();
         void setNombre(string nombre);
-        string getSufijo();
-        void setSufijo(string sufijo);
+        string getNombreFull();
         bool getTransferencia();
         void setTransferencia(bool transferencia);
         int getTiempoSgt();

@@ -9,7 +9,6 @@ class red{
     public:
         red();
         ~red();
-        void insertarLinea(linea* linea, int indice);
         void insertarLinea(linea *linea);
         void eliminarLinea(int indice);
         string *generarOpciones();
