@@ -16,7 +16,7 @@ red::red(){
 
 red::~red()
 {
-    lineas.~lista();
+    lineas = nullptr;
 }
 
 /**
@@ -54,7 +54,7 @@ void red::eliminarLinea(int indice){
  * @return String* que contiene los indices de todas las lineas.
  */
 
-string* red::generarOpciones(){
+string* red::generarOpciones(){ //Recorre el arreglo para poner en cada posicion del arreglo un numero que corresponde a un string con un numero.
     string *opciones = new string[this->getNroLineas() + 1];
     for(int cont = 1; cont <= lineas.getElementos(); cont++){
         opciones[cont - 1] = to_string(cont);
@@ -70,7 +70,7 @@ string* red::generarOpciones(){
  * @return String que contiene todas las lineas deseadas.
  */
 
-string red::strLineas(){
+string red::strLineas(){ //Recorre las lineas de la red obteniendo el nombre y enumerandolas.
     string aux;
     for(int cont = 1; cont <= lineas.getElementos(); cont++){
         aux += to_string(cont) + ". " + lineas[cont]->getNombre() + "\n";
@@ -88,7 +88,7 @@ string red::strLineas(){
 
 bool red::buscarLinea(string nombre){
     nombre = removeSeparator(toLowerCase(nombre), ' ');
-    for(int cont = 1; cont <= lineas.getElementos(); cont++){
+    for(int cont = 1; cont <= lineas.getElementos(); cont++){ //Hace una busqueda lineal por todos los elementos de la lista, y compara los nombres con el nombre del parametro.
         if(removeSeparator(toLowerCase(lineas[cont]->getNombre()), ' ') == nombre) return true;
     }
     return false;

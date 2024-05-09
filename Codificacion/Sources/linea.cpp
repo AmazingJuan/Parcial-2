@@ -25,9 +25,8 @@ linea::linea(string nombre){
  */
 
 linea::~linea() {
-    //Llama al destructor de los objetos lista.
-    estaciones.~lista();
-    transferencia.~lista();
+    estaciones = nullptr;
+    transferencia = nullptr;
 }
 
 /**
@@ -41,9 +40,9 @@ linea::~linea() {
 
 void linea::insertar(estacion *estacion, int indice)
 {
-    estaciones.insertar(new nodo(estacion), indice);
+    estaciones.insertar(new nodo(estacion), indice); //se inserta la nueva estacion y se agrega uno al numero de estaciones.
     nroEstaciones++;
-    if(estacion -> getTransferencia()) {
+    if(estacion -> getTransferencia()) { //Si es de transferencia se agrega a la lista de estaciones de transferencia y aumenta el contador de las mismas en uno
         insertarTransferencia(estacion);
         nroTransf++;
     }
@@ -59,7 +58,7 @@ void linea::insertar(estacion *estacion, int indice)
 
 void linea::insertarTransferencia(estacion *estacion)
 {
-    transferencia.insertar(new nodo(estacion));
+    transferencia.insertar(new nodo(estacion)); //Inserta a la lista una estacion de transferencia
 }
 
 /**
@@ -72,8 +71,8 @@ void linea::insertarTransferencia(estacion *estacion)
 
 void linea::eliminar(int indice)
 {
-    estaciones.eliminar(indice);
-    nroEstaciones--;
+    estaciones.eliminar(indice); //Se elimina la estacion correspondiente
+    nroEstaciones--; //Se disminuye el numero de estaciones en uno.
 }
 
 /**
@@ -86,7 +85,7 @@ void linea::eliminar(int indice)
 
 string linea::strEstaciones(){
     string aux;
-    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+    for(int cont = 1; cont <= estaciones.getElementos(); cont++){ //Recorre las estaciones de la linea obteniendo el nombre y el sufijo si es necesario, enumerandolas.
         aux += to_string(cont) + ". " + estaciones[cont]->getNombreFull() + "\n";
     }
     return aux;
@@ -102,7 +101,7 @@ string linea::strEstaciones(){
 
 string linea::strTransferencia(){
     string aux;
-    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+    for(int cont = 1; cont <= transferencia.getElementos(); cont++){ //Recorre las estaciones de transferencia de la linea obteniendo su nombre y enumerandolas.
         aux += to_string(cont) + ". " + transferencia[cont]->getNombre() + "\n";
     }
     return aux;
@@ -118,7 +117,7 @@ string linea::strTransferencia(){
 
 string* linea::generarOpciones(){
     string *opciones = new string[this->getNroEstaciones() + 1];
-    for(int cont = 1; cont <= estaciones.getElementos(); cont++){
+    for(int cont = 1; cont < estaciones.getElementos(); cont++){ //Recorre el arreglo para poner en cada posicion del arreglo un numero que corresponde a un string con un numero.
         opciones[cont - 1] = to_string(cont);
     }
     opciones[this->getNroEstaciones()] = to_string(this->getNroEstaciones() + 1);
@@ -135,7 +134,7 @@ string* linea::generarOpciones(){
 
 bool linea::buscarEstacion(string nombre){
     nombre = removeSeparator(toLowerCase(nombre), ' ');
-    for(int cont = 1; cont <= estaciones.getElementos(); cont++){ //Hace una busqueda lineal por todos los elementos de la lista.
+    for(int cont = 1; cont <= estaciones.getElementos(); cont++){ //Hace una busqueda lineal por todos los elementos de la lista, y compara los nombres con el nombre ingresado.
         if(removeSeparator(toLowerCase(estaciones[cont] -> getNombre()), ' ') == nombre || removeSeparator(toLowerCase(estaciones[cont] ->getNombreFull()), ' ') == nombre ) return true;
     }
     return false; //Si no encuentra el nombre devuelve falso
@@ -152,11 +151,12 @@ bool linea::buscarEstacion(string nombre){
 int linea::calcularTrayecto(int origen, int destino){
     int tiempo = 0;
     int aux = origen;
+    //Se pone de origen a el indice de la estacion menor.
     if(destino < origen){
         origen = destino;
         destino = aux;
     }
-    for(int cont = origen; cont < destino; cont++){
+    for(int cont = origen; cont < destino; cont++){ //Se recorre la lista desde el indice origen hasta el indice destino y se suman los tiempos de cada uno.
         tiempo += this -> getEstaciones()[origen]->getTiempoSgt();
     }
     return tiempo;
